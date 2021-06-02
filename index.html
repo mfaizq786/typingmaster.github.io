@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>www.typingmaster.com</title>
+<style>
+*{
+	padding:0;
+	margin:0;
+	box-sizing: border-box; 
+}	
+.main-div{
+	width: 100%;
+	height:100vh;
+	position: relative;
+	
+	background: lightgreen;
+}
+.center-div{
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+	text-align: center;
+}
+h1{
+	margin-bottom: 30px;
+	font-size: 3.1rem;
+	color:white;
+	text-shadow: 1px 1px 5px red;
+}
+h2{ text-align: center; }
+textarea{
+	background-color: #444;
+	border:20px solid brown;
+	border-radius: 10px 10px 0px 0px;
+	color:white;
+	font-size: 1.5rem;
+
+}
+.mainbtn{
+	padding: 10px 20px;
+	border:5px solid green;
+	border-radius:20px;
+	background:#fff;
+	font-size:1rem;
+}
+
+</style>	
+</head>
+
+<body>
+     <div class="main-div">
+     	<div class="center-div">
+     		<h1>Welcome To Typing Speed Test</h1>
+     		<h2 id="msg"></h2>
+     		<br>
+     		<textarea id="mywords" cols="100" rows="10" placeholder="Remember, be nice!"></textarea>
+     		<br>
+     		<button id="btn" class="mainbtn">Start</button>
+     	</div>	
+     </div>
+
+<script>
+	const setofwords = [
+	"A full Wave Rectifier is a circuit which converts an ac voltage into a pulsating dc voltage using both half cycle of the applied ac voltage .",
+	"It uses two diodes of which one conduct during one half cycle while the other conducts during the other half cycle of the applied ac voltage.",
+    "In a full wave rectifier circuit we two diodes, one for each half of wave.",
+    "A multiple winding transformer is used whose secondary winding is split equally into two halves with a common center tapped connection.",
+ "Configuration result in each diode conducting in turn when its anode terminal is positive with respect to the transformer center point C produces an output during both half-cycle."
+     ];
+ const msg = document.getElementById("msg");
+ const typewords = document.getElementById("mywords");
+ const btn = document.getElementById("btn");
+ let startTime , endTime;
+ typewords.disabled = true;
+
+const playGame = () =>{
+ 	let a = Math.floor(Math.random() * setofwords.length);
+ 	msg.innerText = setofwords[a];
+ 	let date = new Date();
+ 	startTime = date.getTime();
+ 	btn.innerText= "Done";
+ }
+
+const endPlay = () =>{
+	let date = new Date();
+	endTime = date.getTime();
+   let totaltime  = ((endTime - startTime)/1000); 
+   let totalstr = typewords.value;
+   let wordCount = wordcounter(totalstr);
+   let speed = Math.round((wordCount/totaltime) * 60);
+   let finalmsg = "Your typing speed is "+speed+" words per minute. " ;
+   finalmsg += comparewords(msg.innerText,totalstr);
+   msg.innerText = finalmsg;
+   
+} 
+
+const comparewords = (str1,str2) =>{
+	let word1 = str1.split(" ");
+	let word2 = str2.split(" ");
+	let cnt = 0;
+
+	word1.forEach(function(item,index){
+		if(item == word2[index]){
+			cnt++;
+		}
+	})
+
+	let errorwords = (word1.length - cnt);
+	return (cnt + " correct out of "+ word1.length +" words and the total no of errors are "+errorwords+".");
+}
+
+const wordcounter = (str) =>{
+	let response = str.split(" ").length;
+	return response;
+}
+
+
+ btn.addEventListener('click', function(){
+ 	if(this.innerText == 'Start'){
+      typewords.disabled = false;
+      playGame();
+ 	} else if(this.innerText == 'Done'){
+ 		typewords.disabled = true;
+ 		btn.innerText="Start";
+ 		endPlay();
+ 	}
+ })
+</script>
+</body>
+</html>
